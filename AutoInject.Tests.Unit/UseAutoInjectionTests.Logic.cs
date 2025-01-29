@@ -48,5 +48,24 @@ namespace AutoInject.Tests.Unit
             Assert.NotNull(instance2);
             Assert.NotSame(instance1, instance2);
         }
+
+        [Fact]
+        public void ShouldRegisterTransientService()
+        {
+            // given
+            var assembly = typeof(TestTransientService).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+            var provider = this.serviceCollection.BuildServiceProvider();
+
+            // then
+            var instance1 = provider.GetService<ITestTransientService>();
+            var instance2 = provider.GetService<ITestTransientService>();
+
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.NotSame(instance1, instance2);
+        }
     }
 }
