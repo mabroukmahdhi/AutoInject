@@ -2,6 +2,10 @@
 
 AutoInject is a lightweight and efficient **dependency injection automation library** for .NET. It eliminates the need for manual service registration by automatically discovering and injecting services using custom attributes.
 
+![Nuget](https://img.shields.io/nuget/v/Campsis.AutoInject?logo=nuget&color=blue)
+![Nuget](https://img.shields.io/nuget/dt/Campsis.AutoInject?logo=nuget&color=blue&label=Downloads)
+
+
 ## 🚀 Features
 - **Automatic Service Registration**: Registers **Singleton**, **Scoped**, and **Transient** services dynamically.
 - **Supports Keyed Dependencies**: Inject services based on custom keys.
