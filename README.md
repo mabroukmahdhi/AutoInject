@@ -15,13 +15,13 @@ AutoInject is a lightweight and efficient **dependency injection automation libr
 **.NET CLI**
 
 ```sh
-dotnet add package AutoInject
+dotnet add package Campsis.AutoInject
 ```
 
 Or **Package Manager Console**:
 
 ```sh
-Install-Package AutoInject
+Install-Package Campsis.AutoInject
 ```
 
 ---

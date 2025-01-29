@@ -26,6 +26,7 @@
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/mabroukmahdhi/AutoInject</PackageProjectUrl>
+		<PackageId>Campsis.$(AssemblyName)</PackageId>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -41,7 +42,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\License.txt" >
+		<None Include="..\License.txt">
 			<Pack>true</Pack>
 			<PackagePath></PackagePath>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
