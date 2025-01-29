@@ -26,5 +26,27 @@ namespace AutoInject.Tests.Unit
             Assert.NotNull(instance1);
             Assert.Same(instance1, instance2);
         }
+
+        [Fact]
+        public void ShouldRegisterScopedService()
+        {
+            // given
+            var assembly = typeof(TestSingletonService).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+            var provider = this.serviceCollection.BuildServiceProvider();
+
+            // then
+            using var scope1 = provider.CreateScope();
+            using var scope2 = provider.CreateScope();
+
+            var instance1 = scope1.ServiceProvider.GetService<ITestScopedService>();
+            var instance2 = scope2.ServiceProvider.GetService<ITestScopedService>();
+
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.NotSame(instance1, instance2);
+        }
     }
 }
