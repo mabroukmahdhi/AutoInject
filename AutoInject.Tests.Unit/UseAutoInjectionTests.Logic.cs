@@ -85,5 +85,20 @@ namespace AutoInject.Tests.Unit
             Assert.NotNull(instance1);
             Assert.Same(instance1, instance2);
         }
+
+        [Fact]
+        public void ShouldNotRegisterUnmarkedTypes()
+        {
+            // given
+            var assembly = typeof(UnmarkedService).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+            var provider = this.serviceCollection.BuildServiceProvider();
+
+            // then
+            var instance = provider.GetService<UnmarkedService>();
+            Assert.Null(instance);
+        }
     }
 }
