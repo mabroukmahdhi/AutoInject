@@ -67,5 +67,23 @@ namespace AutoInject.Tests.Unit
             Assert.NotNull(instance2);
             Assert.NotSame(instance1, instance2);
         }
+
+        [Fact]
+        public void ShouldRegisterKeyedSingletonService()
+        {
+            // given
+            var assembly = typeof(TestKeyedSingletonService).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+            var provider = this.serviceCollection.BuildServiceProvider();
+
+            // then
+            var instance1 = provider.GetRequiredKeyedService<ITestService>("MyKey");
+            var instance2 = provider.GetRequiredKeyedService<ITestService>("MyKey");
+
+            Assert.NotNull(instance1);
+            Assert.Same(instance1, instance2);
+        }
     }
 }
