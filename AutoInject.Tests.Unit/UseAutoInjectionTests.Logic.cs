@@ -124,5 +124,31 @@ namespace AutoInject.Tests.Unit
             Assert.NotNull(instance1);
             Assert.Same(instance1, instance2);
         }
+
+        [Fact]
+        public void ShouldRegisterScopedInstanceWhenNoServiceTypeProvided()
+        {
+            // given
+            var assembly = typeof(SomeScopedConfiguration).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+            var provider = this.serviceCollection.BuildServiceProvider();
+
+            using var scope1 = provider.CreateScope();
+            using var scope2 = provider.CreateScope();
+
+            // then
+
+            var instance1 =
+                scope1.ServiceProvider.GetService<SomeScopedConfiguration>();
+
+            var instance2 =
+                scope2.ServiceProvider.GetService<SomeScopedConfiguration>();
+
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.NotSame(instance1, instance2);
+        }
     }
 }
