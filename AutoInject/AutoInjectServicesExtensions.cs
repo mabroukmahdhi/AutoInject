@@ -2,6 +2,7 @@
 // Copyright (c) Mabrouk Mahdhi 2025. All rights reserved.
 // --------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Reflection;
 using AutoInject.Attributes.ScopedAttributes;
@@ -43,35 +44,87 @@ namespace AutoInject
 
                 if (singletonAttr != null)
                 {
-                    if (string.IsNullOrEmpty(singletonAttr.WithKey))
-                        services.AddSingleton(singletonAttr.ServiceType, type);
-                    else
-                        services.AddKeyedSingleton(singletonAttr.ServiceType, singletonAttr.WithKey, type);
-
+                    services.RegisterSingleton(singletonAttr, type);
                     continue;
                 }
 
                 if (scopedAttr != null)
                 {
-                    if (string.IsNullOrEmpty(scopedAttr.WithKey))
-                        services.AddScoped(scopedAttr.ServiceType, type);
-                    else
-                        services.AddKeyedScoped(scopedAttr.ServiceType, scopedAttr.WithKey, type);
-
+                    services.RegisterScoped(scopedAttr, type);
                     continue;
                 }
 
                 if (transientAttr != null)
                 {
-                    if (string.IsNullOrEmpty(transientAttr.WithKey))
-                        services.AddTransient(transientAttr.ServiceType, type);
-                    else
-                        services.AddKeyedTransient(transientAttr.ServiceType, transientAttr.WithKey, type);
+                    services.RegisterTransient(transientAttr, type);
                     continue;
                 }
             }
 
             return services;
+        }
+
+        private static void RegisterSingleton(
+            this IServiceCollection services,
+            SingletonAttribute singletonAttribute,
+            Type implementationType)
+        {
+            if (singletonAttribute.ServiceType == null)
+            {
+                services.AddSingleton(implementationType);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(singletonAttribute.WithKey))
+                services.AddSingleton(
+                    singletonAttribute.ServiceType,
+                    implementationType);
+            else
+                services.AddKeyedSingleton(
+                    singletonAttribute.ServiceType,
+                    singletonAttribute.WithKey, implementationType);
+        }
+
+        private static void RegisterTransient(
+            this IServiceCollection services,
+            TransientAttribute transientAttribute,
+            Type implementationType)
+        {
+            if (transientAttribute.ServiceType == null)
+            {
+                services.AddTransient(implementationType);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(transientAttribute.WithKey))
+                services.AddTransient(
+                    transientAttribute.ServiceType,
+                    implementationType);
+            else
+                services.AddKeyedTransient(
+                    transientAttribute.ServiceType,
+                    transientAttribute.WithKey, implementationType);
+        }
+
+        private static void RegisterScoped(
+            this IServiceCollection services,
+            ScopedAttribute scopedAttribute,
+            Type implementationType)
+        {
+            if (scopedAttribute.ServiceType == null)
+            {
+                services.AddScoped(implementationType);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(scopedAttribute.WithKey))
+                services.AddScoped(
+                    scopedAttribute.ServiceType,
+                    implementationType);
+            else
+                services.AddKeyedScoped(
+                    scopedAttribute.ServiceType,
+                    scopedAttribute.WithKey, implementationType);
         }
     }
 }

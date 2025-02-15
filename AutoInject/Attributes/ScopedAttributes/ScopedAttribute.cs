@@ -1,6 +1,6 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Mabrouk Mahdhi 2024. All rights reserved.
-// ---------------------------------------------------------------
+﻿// --------------------------------------------------------
+// Copyright (c) Mabrouk Mahdhi 2025. All rights reserved.
+// --------------------------------------------------------
 
 using System;
 
@@ -9,7 +9,9 @@ namespace AutoInject.Attributes.ScopedAttributes
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public sealed class ScopedAttribute : Attribute
     {
-        public ScopedAttribute(Type serviceType, string withKey = null)
+        public ScopedAttribute(
+            Type serviceType = null,
+            string withKey = null)
         {
             ServiceType = serviceType;
             WithKey = withKey;
