@@ -63,7 +63,21 @@ public class Repository : IRepository { }
 public class Logger : ILogger { }
 ```
 
-### 3️⃣ **Keyed Injection**
+### 3️⃣ **Instance Registration (No ServiceType Required)**
+If no `ServiceType` is provided, AutoInject will register an **instance**.
+
+```csharp
+[Singleton]
+public class Configs { }
+```
+
+This registers `Configs` as a **singleton instance**, allowing it to be injected without an interface:
+
+```csharp
+var configs = serviceProvider.GetService<Configs>();
+``` 
+
+### 4️⃣ **Keyed Injection**
 AutoInject supports **keyed dependency injection**:
 
 ```csharp

@@ -2,6 +2,7 @@
 // Copyright (c) Mabrouk Mahdhi 2025. All rights reserved.
 // --------------------------------------------------------
 
+using AutoInject.Tests.Unit.Models.Configurations;
 using AutoInject.Tests.Unit.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -99,6 +100,79 @@ namespace AutoInject.Tests.Unit
             // then
             var instance = provider.GetService<UnmarkedService>();
             Assert.Null(instance);
+        }
+
+        [Fact]
+        public void ShouldRegisterSingletonInstanceWhenNoServiceTypeProvided()
+        {
+            // given
+            var assembly = typeof(SomeConfiguration).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+
+            ServiceProvider serviceProvider =
+                this.serviceCollection.BuildServiceProvider();
+
+            // then
+            var instance1 =
+                serviceProvider.GetService<SomeConfiguration>();
+
+            var instance2 =
+                serviceProvider.GetService<SomeConfiguration>();
+
+            Assert.NotNull(instance1);
+            Assert.Same(instance1, instance2);
+        }
+
+        [Fact]
+        public void ShouldRegisterScopedInstanceWhenNoServiceTypeProvided()
+        {
+            // given
+            var assembly = typeof(SomeScopedConfiguration).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+            var provider = this.serviceCollection.BuildServiceProvider();
+
+            using var scope1 = provider.CreateScope();
+            using var scope2 = provider.CreateScope();
+
+            // then
+
+            var instance1 =
+                scope1.ServiceProvider.GetService<SomeScopedConfiguration>();
+
+            var instance2 =
+                scope2.ServiceProvider.GetService<SomeScopedConfiguration>();
+
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.NotSame(instance1, instance2);
+        }
+
+        [Fact]
+        public void ShouldRegisterTransientInstanceWhenNoServiceTypeProvided()
+        {
+            // given
+            var assembly = typeof(SomeTransientConfiguration).Assembly;
+
+            // when
+            this.serviceCollection.UseAutoInjection(assembly);
+
+            var provider =
+                this.serviceCollection.BuildServiceProvider();
+
+            // then
+            var instance1 =
+                provider.GetService<SomeTransientConfiguration>();
+
+            var instance2 =
+                provider.GetService<SomeTransientConfiguration>();
+
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.NotSame(instance1, instance2);
         }
     }
 }
