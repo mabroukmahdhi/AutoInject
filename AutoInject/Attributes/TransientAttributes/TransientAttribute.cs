@@ -6,7 +6,7 @@ using System;
 
 namespace AutoInject.Attributes.TransientAttributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public sealed class TransientAttribute : Attribute
     {
         public TransientAttribute(

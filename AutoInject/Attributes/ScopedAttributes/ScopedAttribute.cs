@@ -6,7 +6,7 @@ using System;
 
 namespace AutoInject.Attributes.ScopedAttributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public sealed class ScopedAttribute : Attribute
     {
         public ScopedAttribute(
