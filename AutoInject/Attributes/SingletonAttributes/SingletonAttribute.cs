@@ -6,7 +6,7 @@ using System;
 
 namespace AutoInject.Attributes.SingletonAttributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public sealed class SingletonAttribute : Attribute
     {
         public SingletonAttribute(
