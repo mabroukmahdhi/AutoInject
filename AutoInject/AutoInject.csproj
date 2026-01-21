@@ -16,13 +16,13 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>dependency-injection;DI;dotnet;autoinject;IServiceProvider;IServiceCollection;constructor-injection;keyed-injection;IoC;CSharp</PackageTags>
 		<PackageReleaseNotes>
-			Changing license to TSSL.
+			Allow multiple uses of Scoped, Singleton, Transient attributes.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>0.2</AssemblyVersion>
-		<FileVersion>0.2</FileVersion>
-		<Version>0.2</Version>
+		<AssemblyVersion>0.2.1</AssemblyVersion>
+		<FileVersion>0.2.1</FileVersion>
+		<Version>0.2.1</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/mabroukmahdhi/AutoInject</PackageProjectUrl>
