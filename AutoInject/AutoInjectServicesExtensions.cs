@@ -38,30 +38,57 @@ namespace AutoInject
 
             foreach (var type in typesWithAttributes)
             {
-                var singletonAttr = type.GetCustomAttribute<SingletonAttribute>();
-                var scopedAttr = type.GetCustomAttribute<ScopedAttribute>();
-                var transientAttr = type.GetCustomAttribute<TransientAttribute>();
+                var singletonAttrs = type.GetCustomAttributes<SingletonAttribute>().ToArray();
+                var scopedAttrs = type.GetCustomAttributes<ScopedAttribute>().ToArray();
+                var transientAttrs = type.GetCustomAttributes<TransientAttribute>().ToArray();
 
-                if (singletonAttr != null)
+                // Validate and register singleton attributes
+                ValidateUniqueServiceTypes(type, singletonAttrs, attr => attr.ServiceType, "Singleton");
+                foreach (var attr in singletonAttrs)
                 {
-                    services.RegisterSingleton(singletonAttr, type);
-                    continue;
+                    services.RegisterSingleton(attr, type);
                 }
 
-                if (scopedAttr != null)
+                // Validate and register scoped attributes
+                ValidateUniqueServiceTypes(type, scopedAttrs, attr => attr.ServiceType, "Scoped");
+                foreach (var attr in scopedAttrs)
                 {
-                    services.RegisterScoped(scopedAttr, type);
-                    continue;
+                    services.RegisterScoped(attr, type);
                 }
 
-                if (transientAttr != null)
+                // Validate and register transient attributes
+                ValidateUniqueServiceTypes(type, transientAttrs, attr => attr.ServiceType, "Transient");
+                foreach (var attr in transientAttrs)
                 {
-                    services.RegisterTransient(transientAttr, type);
-                    continue;
+                    services.RegisterTransient(attr, type);
                 }
             }
 
             return services;
+        }
+
+        private static void ValidateUniqueServiceTypes<TAttribute>(
+            Type implementationType,
+            TAttribute[] attributes,
+            Func<TAttribute, Type> getServiceType,
+            string lifetimeName)
+        {
+            if (attributes.Length <= 1)
+                return;
+
+            var serviceTypes = new System.Collections.Generic.HashSet<Type>();
+
+            foreach (var attr in attributes)
+            {
+                var serviceType = getServiceType(attr) ?? implementationType;
+
+                if (!serviceTypes.Add(serviceType))
+                {
+                    throw new InvalidOperationException(
+                        $"Type '{implementationType.FullName}' has multiple {lifetimeName} attributes with the same service type '{serviceType.FullName}'. " +
+                        $"Multiple attributes of the same lifetime are only allowed with different service types.");
+                }
+            }
         }
 
         private static void RegisterSingleton(
